@@ -1,0 +1,29 @@
+{
+    "name": "drixs6o9/sendinblue-mailer",
+    "type": "symfony-bridge",
+    "description": "Symfony Sendinblue Mailer Bridge",
+    "keywords": ["symfony", "sendinblue", "mailer", "bridge"],
+    "homepage": "https://github.com/drixs6o9",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yann LUCAS",
+            "email": "yann.lucas@oulook.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2.9",
+        "symfony/mailer": "^4.4|^5.0"
+    },
+    "require-dev": {
+        "symfony/http-client": "^4.4|^5.0",
+        "symfony/test-pack": "*"
+    },
+    "autoload": {
+        "psr-4": { "Drixs6o9\\SendinblueMailerBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "minimum-stability": "dev"
+}
