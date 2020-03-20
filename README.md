@@ -33,8 +33,15 @@ Finally, add your Sendinblue credentials into your `.env.local` file of your pro
 ###> drixs6o9/sendinblue-mailer ###
 SENDINBLUE_USERNAME=username
 SENDINBLUE_PASSWORD=password
-MAILER_DSN=smtp://$SENDINBLUE_USERNAME:$SENDINBLUE_PASSWORD@sendinblue
+MAILER_DSN=sendinblue://$SENDINBLUE_USERNAME:$SENDINBLUE_PASSWORD@default
 ###< drixs6o9/sendinblue-mailer ###
+```
+
+Your MAILER_DSN can be configured as SMTP with **sendinblue** or **sendinblue+smtp** key, or be configured as STMPS with **sendinblue+smtps** key.
+
+Exemple: 
+```env
+MAILER_DSN=sendinblue+smtps://$SENDINBLUE_USERNAME:$SENDINBLUE_PASSWORD@default
 ```
 
 Resources

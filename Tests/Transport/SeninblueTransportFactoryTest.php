@@ -2,6 +2,7 @@
 
 namespace Drixs6o9\SendinblueMailerBundle\Tests\Transport;
 
+use Drixs6o9\SendinblueMailerBundle\Transport\SendinblueSmtpsTransport;
 use Drixs6o9\SendinblueMailerBundle\Transport\SendinblueSmtpTransport;
 use Drixs6o9\SendinblueMailerBundle\Transport\SendinblueTransportFactory;
 use Symfony\Component\Mailer\Test\TransportFactoryTestCase;
@@ -29,13 +30,23 @@ class SeninblueTransportFactoryTest extends TransportFactoryTestCase
     public function supportsProvider(): iterable
     {
         yield [
-            new Dsn('smtp', 'sendinblue'),
+            new Dsn('sendinblue', 'default'),
             true,
         ];
 
         yield [
-            new Dsn('smtp', 'example.com'),
-            false,
+            new Dsn('sendinblue+smtp', 'default'),
+            true,
+        ];
+
+        yield [
+            new Dsn('sendinblue+smtps', 'default'),
+            true,
+        ];
+
+        yield [
+            new Dsn('sendinblue+smtp', 'example.com'),
+            true,
         ];
     }
 
@@ -45,8 +56,18 @@ class SeninblueTransportFactoryTest extends TransportFactoryTestCase
     public function createProvider(): iterable
     {
         yield [
-            new Dsn('smtp', 'sendinblue', self::USER, self::PASSWORD),
+            new Dsn('sendinblue', 'default', self::USER, self::PASSWORD),
             new SendinblueSmtpTransport(self::USER, self::PASSWORD, $this->getDispatcher(), $this->getLogger()),
+        ];
+
+        yield [
+            new Dsn('sendinblue+smtp', 'default', self::USER, self::PASSWORD),
+            new SendinblueSmtpTransport(self::USER, self::PASSWORD, $this->getDispatcher(), $this->getLogger()),
+        ];
+
+        yield [
+            new Dsn('sendinblue+smtps', 'default', self::USER, self::PASSWORD),
+            new SendinblueSmtpsTransport(self::USER, self::PASSWORD, $this->getDispatcher(), $this->getLogger()),
         ];
     }
 
@@ -56,8 +77,8 @@ class SeninblueTransportFactoryTest extends TransportFactoryTestCase
     public function unsupportedSchemeProvider(): iterable
     {
         yield [
-            new Dsn('foo', 'sendinblue', self::USER, self::PASSWORD),
-            'The "foo" scheme is not supported for mailer "sendinblue". Supported schemes are: "smtp".',
+            new Dsn('sendinblue+foo', 'default', self::USER, self::PASSWORD),
+            'The "sendinblue+foo" scheme is not supported; supported schemes for mailer "sendinblue" are: "sendinblue", "sendinblue+smtp", "sendinblue+smtps".',
         ];
     }
 
@@ -66,6 +87,8 @@ class SeninblueTransportFactoryTest extends TransportFactoryTestCase
      */
     public function incompleteDsnProvider(): iterable
     {
-        yield [new Dsn('smtp', 'sendinblue', self::USER)];
+        yield [new Dsn('sendinblue+smtp', 'default', self::USER)];
+
+        yield [new Dsn('sendinblue+smtp', 'default', null, self::PASSWORD)];
     }
 }

@@ -14,8 +14,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 final class SendinblueSmtpTransport extends EsmtpTransport
 {
     const SENDINBLUE_SMTP_HOST = 'smtp-relay.sendinblue.com';
-    const SENDINBLUE_SMTP_PORT = 465;
-    const SENDINBLUE_TLS_ENABLED = true;
+    const SENDINBLUE_SMTP_PORT = 587;
+    const SENDINBLUE_TLS_ENABLED = false;
 
     /**
      * SendinblueSmtpTransport constructor.
@@ -25,7 +25,7 @@ final class SendinblueSmtpTransport extends EsmtpTransport
      * @param EventDispatcherInterface|null $dispatcher
      * @param LoggerInterface|null          $logger
      */
-    public function __construct($username, $password, $dispatcher = null, $logger = null)
+    public function __construct(string $username, string $password, ?EventDispatcherInterface $dispatcher = null, ?LoggerInterface $logger = null)
     {
         parent::__construct(
             self::SENDINBLUE_SMTP_HOST,
