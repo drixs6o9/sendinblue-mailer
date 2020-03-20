@@ -11,11 +11,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  *
  * @author Yann LUCAS
  */
-final class SendinblueSmtpTransport extends EsmtpTransport
+final class SendinblueSmtpsTransport extends EsmtpTransport
 {
     const SENDINBLUE_SMTP_HOST = 'smtp-relay.sendinblue.com';
-    const SENDINBLUE_SMTP_PORT = 587;
-    const SENDINBLUE_TLS_ENABLED = false;
+    const SENDINBLUE_SMTP_PORT = 465;
+    const SENDINBLUE_TLS_ENABLED = true;
 
     /**
      * SendinblueSmtpTransport constructor.
