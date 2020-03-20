@@ -3,7 +3,7 @@ Sendinblue Mailer
 
 Provides Sendinblue integration for Symfony Mailer.
 
-[![CircleCI](https://circleci.com/gh/drixs6o9/sendinblue-mailer/tree/master.svg?style=svg)](https://circleci.com/gh/drixs6o9/sendinblue-mailer/tree/master)
+[![CI](https://github.com/drixs6o9/sendinblue-mailer/workflows/CI/badge.svg)](https://github.com/drixs6o9/sendinblue-mailer/actions?query=workflow%3ACI)
 
 Installation
 ------------
