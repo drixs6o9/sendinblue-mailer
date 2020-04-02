@@ -4,6 +4,7 @@ Sendinblue Mailer
 Provides Sendinblue integration for Symfony Mailer.
 
 [![CI](https://github.com/drixs6o9/sendinblue-mailer/workflows/CI/badge.svg)](https://github.com/drixs6o9/sendinblue-mailer/actions?query=workflow%3ACI)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/878ae9f3a3a74b29b143637c085cd9b2)](https://app.codacy.com/manual/yann.lucas/sendinblue-mailer?utm_source=github.com&utm_medium=referral&utm_content=drixs6o9/sendinblue-mailer&utm_campaign=Badge_Grade_Settings)
 
 Installation
 ------------
@@ -47,5 +48,5 @@ MAILER_DSN=sendinblue+smtps://$SENDINBLUE_USERNAME:$SENDINBLUE_PASSWORD@default
 Resources
 ---------
 
-  * [Report issues](https://github.com/drixs6o9/sendinblue-mailer/issues)
-  * [Send Pull Requests](https://github.com/drixs6o9/sendinblue-mailer/pulls)
+*   [Report issues](https://github.com/drixs6o9/sendinblue-mailer/issues)
+*   [Send Pull Requests](https://github.com/drixs6o9/sendinblue-mailer/pulls)
