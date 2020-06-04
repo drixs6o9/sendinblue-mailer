@@ -19,7 +19,7 @@ class SendinBlueApiTransport extends AbstractApiTransport
 
     private $key;
 
-    public function __construct(string $key,  ?HttpClientInterface $client = null, ?EventDispatcherInterface $dispatcher = null, ?LoggerInterface $logger = null)
+    public function __construct(string $key, ?HttpClientInterface $client = null, ?EventDispatcherInterface $dispatcher = null, ?LoggerInterface $logger = null)
     {
         $this->key = $key;
 
@@ -40,11 +40,12 @@ class SendinBlueApiTransport extends AbstractApiTransport
             ],
         ]);
 
+        $result = $response->toArray(false);
         if (201 !== $response->getStatusCode()) {
-            $errors = $response->toArray(false);
-
-            throw new HttpTransportException('Unable to send an email: '.$errors['message'].sprintf(' (code %d).', $response->getStatusCode()), $response);
+            throw new HttpTransportException('Unable to send an email: '.$result['message'].sprintf(' (code %d).', $response->getStatusCode()), $response);
         }
+
+        $sentMessage->setMessageId($result['messageId']);
 
         return $response;
     }
