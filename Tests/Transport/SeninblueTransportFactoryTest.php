@@ -2,6 +2,7 @@
 
 namespace Drixs6o9\SendinblueMailerBundle\Tests\Transport;
 
+use Drixs6o9\SendinblueMailerBundle\Transport\SendinBlueApiTransport;
 use Drixs6o9\SendinblueMailerBundle\Transport\SendinblueSmtpsTransport;
 use Drixs6o9\SendinblueMailerBundle\Transport\SendinblueSmtpTransport;
 use Drixs6o9\SendinblueMailerBundle\Transport\SendinblueTransportFactory;
@@ -48,6 +49,11 @@ class SeninblueTransportFactoryTest extends TransportFactoryTestCase
             new Dsn('sendinblue+smtp', 'example.com'),
             true,
         ];
+
+        yield [
+            new Dsn('sendinblue+api', 'default'),
+            true
+        ];
     }
 
     /**
@@ -69,6 +75,11 @@ class SeninblueTransportFactoryTest extends TransportFactoryTestCase
             new Dsn('sendinblue+smtps', 'default', self::USER, self::PASSWORD),
             new SendinblueSmtpsTransport(self::USER, self::PASSWORD, $this->getDispatcher(), $this->getLogger()),
         ];
+
+        yield [
+            new Dsn('sendinblue+api', 'default', self::USER),
+            new SendinBlueApiTransport(self::USER, $this->getClient(), $this->getDispatcher(), $this->getLogger()),
+        ];
     }
 
     /**
@@ -78,7 +89,7 @@ class SeninblueTransportFactoryTest extends TransportFactoryTestCase
     {
         yield [
             new Dsn('sendinblue+foo', 'default', self::USER, self::PASSWORD),
-            'The "sendinblue+foo" scheme is not supported; supported schemes for mailer "sendinblue" are: "sendinblue", "sendinblue+smtp", "sendinblue+smtps".',
+            'The "sendinblue+foo" scheme is not supported; supported schemes for mailer "sendinblue" are: "sendinblue", "sendinblue+smtp", "sendinblue+smtps", "sendinblue+api".',
         ];
     }
 
@@ -90,5 +101,7 @@ class SeninblueTransportFactoryTest extends TransportFactoryTestCase
         yield [new Dsn('sendinblue+smtp', 'default', self::USER)];
 
         yield [new Dsn('sendinblue+smtp', 'default', null, self::PASSWORD)];
+
+        yield [new Dsn('sendinblue+api', 'default')];
     }
 }

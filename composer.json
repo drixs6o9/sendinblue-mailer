@@ -13,6 +13,8 @@
     ],
     "require": {
         "php": "^7.2.9",
+        "symfony/config": "^4.4|^5.0",
+        "symfony/dependency-injection": "^4.4|^5.0",
         "symfony/mailer": "^4.4|^5.0"
     },
     "require-dev": {
@@ -25,5 +27,5 @@
             "/Tests/"
         ]
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
