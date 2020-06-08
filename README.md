@@ -45,7 +45,7 @@ Exemple:
 MAILER_DSN=sendinblue+smtps://$SENDINBLUE_USERNAME:$SENDINBLUE_PASSWORD@default
 ```
 
-**With API**:
+**With HTTP**:
 
 You can use HTTP API transport by configuring your DSN as this:
 
