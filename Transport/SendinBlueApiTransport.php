@@ -15,7 +15,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class SendinblueApiTransport extends AbstractApiTransport
 {
-    private const HOST = 'api.sendinblue.com';
+    private const SENDINBLUE_API_HOST = 'api.sendinblue.com';
 
     private $key;
 
