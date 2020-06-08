@@ -64,7 +64,7 @@ class SendinblueApiTransport extends AbstractApiTransport
 
         $payload = [
             'sender' => $addressStringifier($envelope->getSender()),
-            "subject" => $email->getSubject()
+            'subject' => $email->getSubject()
         ];
 
         // CC
