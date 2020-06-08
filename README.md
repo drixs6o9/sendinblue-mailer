@@ -29,29 +29,30 @@ return [
 ];
 ```
 
-Finally, add your Sendinblue credentials into your `.env.local` file of your project:
-```env
-###> drixs6o9/sendinblue-mailer ###
-SENDINBLUE_USERNAME=username
-SENDINBLUE_PASSWORD=password
-MAILER_DSN=sendinblue://$SENDINBLUE_USERNAME:$SENDINBLUE_PASSWORD@default
-###< drixs6o9/sendinblue-mailer ###
-```
+Finally, add your Sendinblue credentials into your `.env.local` file of your project following the sending method wanted :
+
+**SMTP**:
 
 Your MAILER_DSN can be configured as SMTP with **sendinblue** or **sendinblue+smtp** key, or be configured as STMPS with **sendinblue+smtps** key.
 
 Exemple: 
 ```env
+###> drixs6o9/sendinblue-mailer ###
+SENDINBLUE_USERNAME=username
+SENDINBLUE_PASSWORD=password
 MAILER_DSN=sendinblue+smtps://$SENDINBLUE_USERNAME:$SENDINBLUE_PASSWORD@default
+###< drixs6o9/sendinblue-mailer ###
 ```
 
-**With HTTP**:
+**HTTP API**:
 
 You can use HTTP API transport by configuring your DSN as this:
 
 ```env
+###> drixs6o9/sendinblue-mailer ###
 SENDINBLUE_API_KEY=your-api-key
 MAILER_DSN=sendinblue+api://$SENDINBLUE_API_KEY@default
+###< drixs6o9/sendinblue-mailer ###
 ```
 
 Resources
@@ -59,3 +60,8 @@ Resources
 
 *   [Report issues](https://github.com/drixs6o9/sendinblue-mailer/issues)
 *   [Send Pull Requests](https://github.com/drixs6o9/sendinblue-mailer/pulls)
+
+Contributors
+------------
+*   [drixs6o9](https://github.com/drixs6o9)
+*   [ptondereau](https://github.com/ptondereau)
