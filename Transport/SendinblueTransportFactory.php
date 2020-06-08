@@ -2,7 +2,6 @@
 
 namespace Drixs6o9\SendinblueMailerBundle\Transport;
 
-use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\Exception\UnsupportedSchemeException;
 use Symfony\Component\Mailer\Transport\AbstractTransportFactory;
 use Symfony\Component\Mailer\Transport\Dsn;
@@ -22,7 +21,7 @@ final class SendinblueTransportFactory extends AbstractTransportFactory
      */
     public function create(Dsn $dsn): TransportInterface
     {
-        if (!\in_array($dsn->getScheme(), $this->getSupportedSchemes())) {
+        if (!\in_array($dsn->getScheme(), $this->getSupportedSchemes(), true)) {
             throw new UnsupportedSchemeException($dsn, 'sendinblue', $this->getSupportedSchemes());
         }
 
@@ -35,6 +34,12 @@ final class SendinblueTransportFactory extends AbstractTransportFactory
             case 'sendinblue+smtps':
                 $transport = sprintf(self::NAMESPACE, 'SendinblueSmtpsTransport');
                 break;
+            case 'sendinblue+api':
+                $key = $this->getUser($dsn);
+                $host = 'default' === $dsn->getHost() ? null : $dsn->getHost();
+                $port = $dsn->getPort();
+                return (new SendinblueApiTransport($key, $this->client, $this->dispatcher, $this->logger))
+                    ->setHost($host)->setPort($port);
         }
 
         return new $transport(
@@ -50,6 +55,6 @@ final class SendinblueTransportFactory extends AbstractTransportFactory
      */
     protected function getSupportedSchemes(): array
     {
-        return ['sendinblue', 'sendinblue+smtp', 'sendinblue+smtps'];
+        return ['sendinblue', 'sendinblue+smtp', 'sendinblue+smtps', 'sendinblue+api'];
     }
 }
