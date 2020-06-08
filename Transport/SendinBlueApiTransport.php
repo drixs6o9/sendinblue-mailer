@@ -67,6 +67,11 @@ class SendinblueApiTransport extends AbstractApiTransport
             'subject' => $email->getSubject()
         ];
 
+        // To
+        if ($emails = array_map($addressStringifier, $email->getTo())) {
+            $payload['to'] = $emails;
+        }
+
         // CC
         if ($emails = array_map($addressStringifier, $email->getCc())) {
             $payload['cc'] = $emails;
