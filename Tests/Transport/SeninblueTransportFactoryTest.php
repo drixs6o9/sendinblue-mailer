@@ -2,7 +2,7 @@
 
 namespace Drixs6o9\SendinblueMailerBundle\Tests\Transport;
 
-use Drixs6o9\SendinblueMailerBundle\Transport\SendinBlueApiTransport;
+use Drixs6o9\SendinblueMailerBundle\Transport\SendinblueApiTransport;
 use Drixs6o9\SendinblueMailerBundle\Transport\SendinblueSmtpsTransport;
 use Drixs6o9\SendinblueMailerBundle\Transport\SendinblueSmtpTransport;
 use Drixs6o9\SendinblueMailerBundle\Transport\SendinblueTransportFactory;
@@ -78,7 +78,7 @@ class SeninblueTransportFactoryTest extends TransportFactoryTestCase
 
         yield [
             new Dsn('sendinblue+api', 'default', self::USER),
-            new SendinBlueApiTransport(self::USER, $this->getClient(), $this->getDispatcher(), $this->getLogger()),
+            new SendinblueApiTransport(self::USER, $this->getClient(), $this->getDispatcher(), $this->getLogger()),
         ];
     }
 
