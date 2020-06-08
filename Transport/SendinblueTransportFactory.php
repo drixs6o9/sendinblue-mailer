@@ -25,15 +25,6 @@ final class SendinblueTransportFactory extends AbstractTransportFactory
             throw new UnsupportedSchemeException($dsn, 'sendinblue', $this->getSupportedSchemes());
         }
 
-        if ($dsn->getScheme() === 'sendinblue+api') {
-            $key = $this->getUser($dsn);
-            $host = 'default' === $dsn->getHost() ? null : $dsn->getHost();
-            $port = $dsn->getPort();
-
-            return (new SendinBlueApiTransport($key, $this->client, $this->dispatcher, $this->logger))
-                ->setHost($host)->setPort($port);
-        }
-
         switch ($dsn->getScheme()) {
             default:
             case 'sendinblue':
@@ -42,6 +33,13 @@ final class SendinblueTransportFactory extends AbstractTransportFactory
                 break;
             case 'sendinblue+smtps':
                 $transport = sprintf(self::NAMESPACE, 'SendinblueSmtpsTransport');
+                break;
+            case 'sendinblue+api':
+                $key = $this->getUser($dsn);
+                $host = 'default' === $dsn->getHost() ? null : $dsn->getHost();
+                $port = $dsn->getPort();
+                return (new SendinBlueApiTransport($key, $this->client, $this->dispatcher, $this->logger))
+                    ->setHost($host)->setPort($port);
                 break;
         }
 
