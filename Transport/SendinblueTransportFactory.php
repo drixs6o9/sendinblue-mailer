@@ -40,7 +40,6 @@ final class SendinblueTransportFactory extends AbstractTransportFactory
                 $port = $dsn->getPort();
                 return (new SendinBlueApiTransport($key, $this->client, $this->dispatcher, $this->logger))
                     ->setHost($host)->setPort($port);
-                break;
         }
 
         return new $transport(
