@@ -35,11 +35,10 @@ final class SendinblueTransportFactory extends AbstractTransportFactory
                 $transport = sprintf(self::NAMESPACE, 'SendinblueSmtpsTransport');
                 break;
             case 'sendinblue+api':
-                $key = $this->getUser($dsn);
-                $host = 'default' === $dsn->getHost() ? null : $dsn->getHost();
-                $port = $dsn->getPort();
-                return (new SendinblueApiTransport($key, $this->client, $this->dispatcher, $this->logger))
-                    ->setHost($host)->setPort($port);
+                return (new SendinblueApiTransport($this->getUser($dsn), $this->client, $this->dispatcher, $this->logger))
+                    ->setHost('default' === $dsn->getHost() ? null : $dsn->getHost())
+                    ->setPort($dsn->getPort())
+                ;
         }
 
         return new $transport(
