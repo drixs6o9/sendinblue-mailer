@@ -5,10 +5,13 @@ namespace Drixs6o9\SendinblueMailerBundle\Transport;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Exception\HttpTransportException;
+use Symfony\Component\Mailer\Header\MetadataHeader;
+use Symfony\Component\Mailer\Header\TagHeader;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\AbstractApiTransport;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Header\Headers;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -50,60 +53,50 @@ class SendinblueApiTransport extends AbstractApiTransport
         return $response;
     }
 
+    protected function stringifyAddresses(array $addresses): array
+    {
+        $stringifiedAddresses = [];
+        foreach ($addresses as $address) {
+            $stringifiedAddresses[] = $this->stringifyAddress($address);
+        }
+
+        return $stringifiedAddresses;
+    }
+
     private function getPayload(Email $email, Envelope $envelope): array
     {
-        $addressStringifier = function (Address $address) {
-            $stringified = ['email' => $address->getAddress()];
-
-            if ($address->getName()) {
-                $stringified['name'] = $address->getName();
-            }
-
-            return $stringified;
-        };
-
         $payload = [
-            'sender' => $addressStringifier($envelope->getSender()),
-            'subject' => $email->getSubject()
+            'sender' => $this->stringifyAddress($envelope->getSender()),
+            'to' => $this->stringifyAddresses($this->getRecipients($email, $envelope)),
+            'subject' => $email->getSubject(),
         ];
-
-        // To
-        if ($emails = array_map($addressStringifier, $email->getTo())) {
-            $payload['to'] = $emails;
+        if ($attachements = $this->prepareAttachments($email)) {
+            $payload['attachment'] = $attachements;
         }
-
-        // CC
-        if ($emails = array_map($addressStringifier, $email->getCc())) {
-            $payload['cc'] = $emails;
+        if ($emails = $email->getReplyTo()) {
+            $payload['replyTo'] = current($this->stringifyAddresses($emails));
         }
-
-        // BCC
-        if ($emails = array_map($addressStringifier, $email->getBcc())) {
-            $payload['bcc'] = $emails;
+        if ($emails = $email->getCc()) {
+            $payload['cc'] = $this->stringifyAddresses($emails);
         }
-
-        // ReplyTo
-        if ($emails = array_map($addressStringifier, $email->getReplyTo())) {
-            $payload['replyTo'] = $emails;
+        if ($emails = $email->getBcc()) {
+            $payload['bcc'] = $this->stringifyAddresses($emails);
         }
-
-        // Body
-        if (null !== $email->getTextBody()) {
+        if ($email->getTextBody()) {
             $payload['textContent'] = $email->getTextBody();
         }
-        if (null !== $email->getHtmlBody()) {
+        if ($email->getHtmlBody()) {
             $payload['htmlContent'] = $email->getHtmlBody();
         }
-
-        // Attachments
-        if ($email->getAttachments()) {
-            $payload['attachment'] = $this->getAttachments($email);
+        if ($headersAndTags = $this->prepareHeadersAndTags($email->getHeaders()))
+        {
+            $payload = array_merge($payload, $headersAndTags);
         }
 
         return $payload;
     }
 
-    private function getAttachments(Email $email): array
+    private function prepareAttachments(Email $email): array
     {
         $attachments = [];
         foreach ($email->getAttachments() as $attachment) {
@@ -119,6 +112,51 @@ class SendinblueApiTransport extends AbstractApiTransport
         }
 
         return $attachments;
+    }
+
+    private function prepareHeadersAndTags(Headers $headers): array
+    {
+        $headersAndTags = [];
+        $headersToBypass = ['from', 'to', 'cc', 'bcc', 'subject', 'reply-to', 'content-type', 'accept', 'api-key'];
+        foreach ($headers->all() as $name => $header) {
+            if (\in_array($name, $headersToBypass, true)) {
+                continue;
+            }
+            if ($header instanceof TagHeader) {
+                $headersAndTags['tags'][] = $header->getValue();
+
+                continue;
+            }
+            if ($header instanceof MetadataHeader) {
+                $headersAndTags['headers']['X-Mailin-'.ucfirst(strtolower($header->getKey()))] = $header->getValue();
+
+                continue;
+            }
+            if ('templateid' === $name) {
+                $headersAndTags[$header->getName()] = (int) $header->getValue();
+
+                continue;
+            }
+            if ('params' === $name) {
+                $headersAndTags[$header->getName()] = $header->getParameters();
+
+                continue;
+            }
+            $headersAndTags['headers'][$name] = $header->getBodyAsString();
+        }
+
+        return $headersAndTags;
+    }
+
+    private function stringifyAddress(Address $address): array
+    {
+        $stringifiedAddress = ['email' => $address->getAddress()];
+
+        if ($address->getName()) {
+            $stringifiedAddress['name'] = $address->getName();
+        }
+
+        return $stringifiedAddress;
     }
 
     private function getEndpoint(): ?string
