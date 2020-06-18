@@ -36,6 +36,7 @@ Finally, add your Sendinblue credentials into your `.env.local` file of your pro
 Your MAILER_DSN can be configured as SMTP with **sendinblue** or **sendinblue+smtp** key, or be configured as STMPS with **sendinblue+smtps** key.
 
 Exemple: 
+
 ```env
 ###> drixs6o9/sendinblue-mailer ###
 SENDINBLUE_USERNAME=username
@@ -54,6 +55,36 @@ SENDINBLUE_API_KEY=your-api-key
 MAILER_DSN=sendinblue+api://$SENDINBLUE_API_KEY@default
 ###< drixs6o9/sendinblue-mailer ###
 ```
+
+With HTTP API, you can use custom headers.
+
+```php
+$params = ['param1' => 'foo', 'param2' => 'bar'];
+$json = json_encode(['"custom_header_1' => 'custom_value_1']);
+
+$email = new Email();
+$email
+    ->getHeaders()
+    ->add(new MetadataHeader('custom', $json))
+    ->add(new TagHeader('TagInHeaders1'))
+    ->add(new TagHeader('TagInHeaders2'))
+    ->addTextHeader('sender.ip', '1.2.3.4')
+    ->addTextHeader('templateId', 1)
+    ->addParameterizedHeader('params', 'params', $params)
+    ->addTextHeader('foo', 'bar')
+;
+```
+
+This example allow you to set :
+
+*   templateId
+*   params
+*   tags
+*   headers 
+    *   sender.ip
+    *   X-Mailin-Custom
+
+For more informations, you can refer to [Sendinblue API documentation](https://developers.sendinblue.com/reference#sendtransacemail).
 
 Resources
 ---------

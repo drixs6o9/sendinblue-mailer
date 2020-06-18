@@ -16,3 +16,12 @@ CHANGELOG
 -----
 
 *   Added SendinblueApiTransport (Thanks to [@ptondereau](https://github.com/ptondereau))
+
+1.2.0
+-----
+
+*   Added advanced options support for SendinblueApiTransport :
+    *   Headers
+    *   Tags
+    *   TemplateId
+    *   Params
