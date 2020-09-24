@@ -1,6 +1,8 @@
 Sendinblue Mailer
 =================
 
+This package is abandoned and no longer maintained. I suggests using the [symfony/sendinblue-mailer](https://github.com/symfony/sendinblue-mailer) package instead.
+
 Provides Sendinblue integration for Symfony Mailer.
 
 [![CI](https://github.com/drixs6o9/sendinblue-mailer/workflows/CI/badge.svg)](https://github.com/drixs6o9/sendinblue-mailer/actions?query=workflow%3ACI)
